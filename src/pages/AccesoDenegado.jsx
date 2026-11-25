@@ -1,8 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { ShieldAlert, ArrowLeft, House } from 'lucide-react';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const AccesoDenegado = () => {
+    useDocumentTitle('Acceso Denegado');
+
     return (
         <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] px-5 py-12">
 

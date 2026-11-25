@@ -20,6 +20,7 @@ import {
 import Navbar from '../components/Navbar/Navbar';
 import PropiedadGaleria from '../components/PropiedadGaleria/PropiedadGaleria';
 import { obtenerDetallePublicacion } from '../services/publicaciones.api';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const DetallePropiedad = () => {
     const { id } = useParams();
@@ -90,6 +91,8 @@ const DetallePropiedad = () => {
             disponible: Boolean(propiedad.piscina)
         }
     ].filter((item) => item.disponible) : [];
+
+    useDocumentTitle(propiedad?.titulo || 'Detalle de Propiedad');
 
     return (
         <div className="min-h-screen bg-white">

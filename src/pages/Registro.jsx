@@ -14,6 +14,7 @@ import {
 import AuthLayout from '../components/AuthLayout/AuthLayout';
 import AuthInput from '../components/AuthInput/AuthInput';
 import { registrarUsuario } from '../services/auth.api.js';
+import useDocumentTitle from '../hooks/useDocumentTitle.js';
 
 const Registro = () => {
     const navigate = useNavigate();
@@ -138,6 +139,8 @@ const Registro = () => {
             setCargando(false);
         }
     };
+
+    useDocumentTitle('Registrar Nueva Cuenta');
 
     return (
         <AuthLayout

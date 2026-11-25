@@ -11,6 +11,7 @@ import AuthInput from '../components/AuthInput/AuthInput';
 import AuthLayout from '../components/AuthLayout/AuthLayout';
 import useAuth from '../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const Login = () => {
     const location = useLocation();
@@ -102,6 +103,8 @@ const Login = () => {
 
         }
     };
+
+    useDocumentTitle('Iniciar Sesion');
 
     return (
         <AuthLayout

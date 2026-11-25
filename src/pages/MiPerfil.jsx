@@ -8,9 +8,10 @@ import Footer from '../components/Footer/Footer';
 import PerfilResumen from '../components/Perfil/PerfilResumen';
 import PerfilDatos from '../components/Perfil/PerfilDatos';
 import PerfilSeguridad from '../components/Perfil/PerfilSeguridad';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const MiPerfil = () => {
-
+    useDocumentTitle('Mi Perfil');
     return (
         <div className="flex min-h-screen flex-col bg-[#F4F5F7]">
 

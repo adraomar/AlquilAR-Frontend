@@ -5,6 +5,8 @@ import { obtenerCatalogo } from '../services/publicaciones.api';
 import PropiedadCard from '../components/PropiedadCard/PropiedadCard';
 import Navbar from '../components/Navbar/Navbar';
 import Hero from '../components/Hero/Hero';
+import Paginacion from '../components/Paginacion/Paginacion';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 import {
     MapPin,
@@ -19,6 +21,12 @@ const Catalogo = () => {
 
     const [busqueda, setBusqueda] = useState('');
     const [operacion, setOperacion] = useState('todas');
+
+    // Paginación
+    const [paginaActual, setPaginaActual] = useState(1);
+    const propiedadesPorPagina = 10;
+
+    useDocumentTitle('Catalogo de Propiedades');
 
     // Obtener propiedades desde la API
     useEffect(() => {
@@ -68,6 +76,42 @@ const Catalogo = () => {
     }) => {
         setBusqueda(busqueda);
         setOperacion(operacion);
+        setPaginaActual(1);
+    };
+
+    // Calcular paginación
+    const totalPaginas = Math.ceil(
+        filtradas.length / propiedadesPorPagina
+    );
+
+    const paginaVisible = Math.min(
+        paginaActual,
+        Math.max(1, totalPaginas)
+    );
+
+    const indiceInicial =
+        (paginaVisible - 1) * propiedadesPorPagina;
+
+    const indiceFinal =
+        indiceInicial + propiedadesPorPagina;
+
+    const propiedadesPaginadas = filtradas.slice(
+        indiceInicial,
+        indiceFinal
+    );
+
+    const cambiarPagina = (pagina) => {
+
+        if (pagina < 1 || pagina > totalPaginas) return;
+
+        setPaginaActual(pagina);
+
+        document
+            .getElementById('propiedades')
+            ?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
     };
 
     return (
@@ -111,7 +155,10 @@ const Catalogo = () => {
 
                             <select
                                 value={operacion}
-                                onChange={(e) => setOperacion(e.target.value)}
+                                onChange={(e) => {
+                                    setOperacion(e.target.value);
+                                    setPaginaActual(1);
+                                }}
                                 className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 outline-none transition focus:border-[#E11D2E] focus:ring-2 focus:ring-red-100"
                             >
                                 <option value="todas">
@@ -198,14 +245,29 @@ const Catalogo = () => {
 
                     {/* Tarjetas de propiedades */}
                     {!cargando && !error && filtradas.length > 0 && (
-                        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                            {filtradas.map((propiedad) => (
-                                <PropiedadCard
-                                    key={propiedad.id_publicacion}
-                                    propiedad={propiedad}
-                                />
-                            ))}
-                        </div>
+                        <>
+
+                            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+
+                                {propiedadesPaginadas.map((propiedad) => (
+                                    <PropiedadCard
+                                        key={propiedad.id_publicacion}
+                                        propiedad={propiedad}
+                                    />
+                                ))}
+
+                            </div>
+
+                            {/* Paginación */}
+                            <Paginacion
+                                paginaActual={paginaVisible}
+                                totalPaginas={totalPaginas}
+                                totalResultados={filtradas.length}
+                                elementosPorPagina={propiedadesPorPagina}
+                                onCambiarPagina={cambiarPagina}
+                            />
+
+                        </>
                     )}
 
                 </section>
@@ -213,7 +275,7 @@ const Catalogo = () => {
             </main>
 
             {/* Footer */}
-            <Footer/>
+            <Footer />
         </div>
     );
 };
