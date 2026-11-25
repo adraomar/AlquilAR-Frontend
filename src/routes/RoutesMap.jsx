@@ -1,26 +1,41 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Catalogo from "../pages/Catalogo";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// Páginas públicas
+import Catalogo from '../pages/Catalogo';
 import DetallePropiedad from '../pages/DetallePropiedad';
 import Login from '../pages/Login';
 import Registro from '../pages/Registro';
 import MiPerfil from '../pages/MiPerfil';
 import AccesoDenegado from '../pages/AccesoDenegado';
 
+// Páginas administrativas
+import Dashboard from '../pages/Admin/Dashboard.jsx';
+import ListadoPropiedades from '../pages/Admin/Propiedades/ListadoPropiedades';
+import ListadoPublicaciones from '../pages/Admin/Publicaciones/ListadoPublicaciones';
+
+// Layouts
+import AdminLayout from '../components/AdminLayout/AdminLayout';
+
+// Componentes y contexto
 import ScrollManager from '../components/ScrollManager/ScrollManager';
 import AuthProvider from '../context/AuthProvider';
 
+// Protección de rutas
 import ProtectedRoute from '../routes/ProtectedRoute';
 import PublicRoute from '../routes/PublicRoute';
 
 import { ROLES } from '../config/roles.js';
 
 const RoutesMap = () => {
+
     return (
         <BrowserRouter>
+
             <AuthProvider>
+
                 <ScrollManager />
+
                 <Routes>
 
                     {/* Rutas de acceso libre */}
@@ -64,30 +79,6 @@ const RoutesMap = () => {
 
                     </Route>
 
-                    {/* Administradores del sistema */}
-                    <Route
-                        element={
-                            <ProtectedRoute
-                                rolesPermitidos={[
-                                    ROLES.ADMIN_SISTEMA
-                                ]}
-                            />
-                        }
-                    >
-                        <Route
-                            path="/admin"
-                            element={
-                                <div className="p-10">
-                                    <h1 className="text-2xl font-bold">
-                                        Panel de administración
-                                    </h1>
-                                    <p>Panel en desarrollo.</p>
-                                </div>
-                            }
-                        />
-
-                    </Route>
-
                     {/* Administración inmobiliaria */}
                     <Route
                         element={
@@ -99,22 +90,37 @@ const RoutesMap = () => {
                             />
                         }
                     >
+
                         <Route
-                            path="/admin/propiedades"
-                            element={
-                                <div className="p-10">
-                                    <h1 className="text-2xl font-bold">
-                                        Gestión de propiedades
-                                    </h1>
-                                    <p>Módulo en desarrollo.</p>
-                                </div>
-                            }
-                        />
+                            path="/admin"
+                            element={<AdminLayout />}
+                        >
+
+                            <Route
+                                index
+                                element={<Dashboard />}
+                            />
+
+                            <Route
+                                path="propiedades"
+                                element={<ListadoPropiedades />}
+                            />
+
+                            <Route
+                                path="publicaciones"
+                                element={<ListadoPublicaciones />}
+                            />
+
+                        </Route>
+
                     </Route>
+
                 </Routes>
+
             </AuthProvider>
+
         </BrowserRouter>
     );
-}
+};
 
-export default RoutesMap
+export default RoutesMap;

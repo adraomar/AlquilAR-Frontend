@@ -122,15 +122,9 @@ const UserCP = ({ movil = false, onCerrarMenu }) => {
             visible: true
         },
         {
-            nombre: 'Panel de administración',
+            nombre: 'Panel inmobiliario',
             icon: LayoutDashboard,
             ruta: '/admin',
-            visible: tieneRol(ROLES.ADMIN_SISTEMA)
-        },
-        {
-            nombre: 'Gestión inmobiliaria',
-            icon: Building2,
-            ruta: '/admin/propiedades',
             visible: tieneAlgunRol(
                 ROLES.ADMIN_SISTEMA,
                 ROLES.ADMIN_INMOBILIARIA
