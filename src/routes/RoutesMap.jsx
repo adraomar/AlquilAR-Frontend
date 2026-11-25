@@ -12,6 +12,7 @@ import AccesoDenegado from '../pages/AccesoDenegado';
 // Páginas administrativas
 import Dashboard from '../pages/Admin/Dashboard.jsx';
 import ListadoPropiedades from '../pages/Admin/Propiedades/ListadoPropiedades';
+import NuevaPropiedad from '../pages/Admin/Propiedades/NuevaPropiedad';
 import ListadoPublicaciones from '../pages/Admin/Publicaciones/ListadoPublicaciones';
 
 // Layouts
@@ -104,6 +105,11 @@ const RoutesMap = () => {
                             <Route
                                 path="propiedades"
                                 element={<ListadoPropiedades />}
+                            />
+
+                            <Route
+                                path="propiedades/nueva"
+                                element={<NuevaPropiedad />}
                             />
 
                             <Route
