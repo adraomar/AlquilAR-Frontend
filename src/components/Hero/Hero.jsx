@@ -9,7 +9,7 @@ import {
 
 const Hero = ({ onBuscar }) => {
     const [busqueda, setBusqueda] = useState('');
-    const [operacion, setOperacion] = useState('todos');
+    const [operacion, setOperacion] = useState('todas');
 
     const manejarBusqueda = (e) => {
         e.preventDefault();
@@ -102,7 +102,7 @@ const Hero = ({ onBuscar }) => {
                         aria-label="Tipo de operación"
                         className="min-w-0 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:border-[#E11D2E]"
                     >
-                        <option value="todos">Todas las operaciones</option>
+                        <option value="todas">Todas las publicaciones</option>
                         <option value="venta">Comprar</option>
                         <option value="alquiler">Alquilar</option>
                     </select>
