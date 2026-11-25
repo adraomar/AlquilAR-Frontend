@@ -10,7 +10,9 @@ import useDocumentTitle from '../hooks/useDocumentTitle';
 
 import {
     MapPin,
-    SlidersHorizontal
+    SlidersHorizontal,
+    WifiOff,
+    RefreshCw
 } from 'lucide-react';
 import Footer from '../components/Footer/Footer';
 
@@ -29,19 +31,26 @@ const Catalogo = () => {
     useDocumentTitle('Catalogo de Propiedades');
 
     // Obtener propiedades desde la API
-    useEffect(() => {
-        const cargar = async () => {
-            try {
-                const datos = await obtenerCatalogo();
-                setPropiedades(datos);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setCargando(false);
-            }
-        };
+    const cargarPropiedades = async () => {
+        try {
+            setCargando(true);
+            setError('');
+            const datos = await obtenerCatalogo();
+            setPropiedades(datos);
+        } catch (error) {
 
-        cargar();
+            console.error('Error al cargar el catálogo:', error);
+            setError(
+                'No se pudo establecer conexión con el servidor. Por favor, intentá nuevamente en unos instantes.'
+            );
+        } finally {
+            setCargando(false);
+        }
+    };
+
+    useEffect(() => {
+        cargarPropiedades();
+
     }, []);
 
     // Filtrar propiedades
@@ -215,11 +224,39 @@ const Catalogo = () => {
                     )}
 
                     {/* Error */}
-                    {error && (
-                        <div className="rounded-2xl border border-red-100 bg-white p-8 text-center">
-                            <p className="font-medium text-red-600">
+
+                    {/* Error */}
+                    {!cargando && error && (
+                        <div
+                            role="alert"
+                            className="flex flex-col items-center justify-center rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm"
+                        >
+
+                            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-red-50">
+                                <WifiOff
+                                    size={30}
+                                    className="text-[#E11D2E]"
+                                />
+                            </div>
+
+                            <h3 className="text-xl font-bold text-[#111827]">
+                                No pudimos cargar las propiedades
+                            </h3>
+
+                            <p className="mt-3 max-w-md text-sm leading-relaxed text-gray-500">
                                 {error}
                             </p>
+
+                            <button
+                                type="button"
+                                onClick={cargarPropiedades}
+                                className="mt-6 inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#E11D2E] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-red-700 active:scale-95"
+                            >
+                                <RefreshCw size={18} />
+
+                                Reintentar
+                            </button>
+
                         </div>
                     )}
 
