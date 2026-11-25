@@ -1,21 +1,26 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
     House,
     Menu,
     X,
     Search,
-    ArrowRight
+    ArrowRight,
+    User
 } from 'lucide-react';
 
+import UserCP from '../UserCP/UserCP';
+
 const Navbar = () => {
+
     const [menuAbierto, setMenuAbierto] = useState(false);
 
     const enlaces = [
-        { nombre: 'Inicio', href: '#inicio' },
-        { nombre: 'Propiedades', href: '#propiedades' },
-        { nombre: 'Nosotros', href: '#nosotros' },
-        { nombre: 'Contacto', href: '#contacto' }
+        { nombre: 'Inicio', href: '/#inicio' },
+        { nombre: 'Propiedades', href: '/#propiedades' },
+        { nombre: 'Nosotros', href: '/#nosotros' },
+        { nombre: 'Contacto', href: '/#contacto' }
     ];
 
     return (
@@ -24,8 +29,8 @@ const Navbar = () => {
             <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
 
                 {/* Logo */}
-                <a
-                    href="#inicio"
+                <Link
+                    to="/"
                     className="flex items-center gap-2"
                 >
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E11D2E] shadow-md shadow-red-900/20">
@@ -42,41 +47,47 @@ const Navbar = () => {
                             AR
                         </span>
                     </span>
-                </a>
+                </Link>
 
                 {/* Navegación escritorio */}
-                <div className="hidden items-center gap-9 lg:flex">
+                <div className="hidden items-center gap-5 lg:flex xl:gap-9">
+
                     {enlaces.map((enlace) => (
-                        <a
+                        <Link
                             key={enlace.nombre}
-                            href={enlace.href}
+                            to={enlace.href}
                             className="relative text-sm font-medium text-gray-300 transition-colors duration-200 hover:text-white after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-[#E11D2E] after:transition-all after:duration-300 hover:after:w-full"
                         >
                             {enlace.nombre}
-                        </a>
+                        </Link>
                     ))}
+
                 </div>
 
                 {/* Acciones escritorio */}
-                <div className="hidden items-center gap-4 lg:flex">
+                <div className="hidden items-center gap-3 lg:flex xl:gap-4">
 
                     {/* Buscar */}
-                    <a
-                        href="#propiedades"
+                    <Link
+                        to="/#propiedades"
                         aria-label="Buscar propiedades"
                         className="rounded-full p-2 text-gray-300 transition-all hover:bg-white/10 hover:text-white"
                     >
                         <Search size={20} />
-                    </a>
+                    </Link>
+
+                    {/* Menú dinámico del usuario */}
+                    <UserCP />
 
                     {/* Contacto */}
-                    <a
-                        href="#contacto"
+                    <Link
+                        to="/#contacto"
                         className="flex items-center gap-2 rounded-xl bg-[#E11D2E] px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-red-700 hover:shadow-lg hover:shadow-red-900/30"
                     >
                         Contactanos
                         <ArrowRight size={16} />
-                    </a>
+                    </Link>
+
                 </div>
 
                 {/* Botón móvil */}
@@ -84,10 +95,12 @@ const Navbar = () => {
                     type="button"
                     className="rounded-lg p-2 text-white transition hover:bg-white/10 lg:hidden"
                     aria-label={
-                        menuAbierto ? 'Cerrar menú' : 'Abrir menú'
+                        menuAbierto
+                            ? 'Cerrar menú'
+                            : 'Abrir menú'
                     }
                     aria-expanded={menuAbierto}
-                    onClick={() => setMenuAbierto(!menuAbierto)}
+                    onClick={() => setMenuAbierto(prev => !prev)}
                 >
                     {menuAbierto ? (
                         <X size={26} />
@@ -95,35 +108,47 @@ const Navbar = () => {
                         <Menu size={26} />
                     )}
                 </button>
+
             </nav>
 
             {/* Menú móvil */}
             {menuAbierto && (
-                <div className="border-t border-white/10 bg-[#111827] px-6 py-6 shadow-xl lg:hidden">
+                <div className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-white/10 bg-[#111827] px-6 py-6 shadow-xl lg:hidden">
+
                     <div className="flex flex-col gap-5">
 
                         {enlaces.map((enlace) => (
-                            <a
+                            <Link
                                 key={enlace.nombre}
-                                href={enlace.href}
+                                to={enlace.href}
                                 onClick={() => setMenuAbierto(false)}
                                 className="border-b border-white/10 pb-3 text-sm font-semibold text-gray-300 transition-colors hover:text-[#E11D2E]"
                             >
                                 {enlace.nombre}
-                            </a>
+                            </Link>
                         ))}
 
-                        <a
-                            href="#contacto"
+                        {/* Menú de usuario móvil */}
+                        <UserCP
+                            movil
+                            onCerrarMenu={() => setMenuAbierto(false)}
+                        />
+
+                        {/* Contacto */}
+                        <Link
+                            to="/#contacto"
                             onClick={() => setMenuAbierto(false)}
                             className="flex items-center justify-center gap-2 rounded-xl bg-[#E11D2E] px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-700"
                         >
                             Contactanos
                             <ArrowRight size={17} />
-                        </a>
+                        </Link>
+
                     </div>
+
                 </div>
             )}
+
         </header>
     );
 };

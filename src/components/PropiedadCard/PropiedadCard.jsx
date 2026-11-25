@@ -25,7 +25,7 @@ const PropiedadCard = ({ propiedad }) => {
             <div className="relative h-60 overflow-hidden bg-gray-100">
                 {propiedad.imagen_portada ? (
                     <img
-                        src={`http://localhost:3000${propiedad.imagen_portada}`}
+                        src={`${import.meta.env.VITE_SERVER_URL}${propiedad.imagen_portada}`}
                         alt={propiedad.titulo}
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                         loading="lazy"

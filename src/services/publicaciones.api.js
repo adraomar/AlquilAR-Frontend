@@ -1,22 +1,23 @@
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const obtenerCatalogo = async () => {
     const response = await fetch(`${API_URL}/catalogo`);
 
-    if (!response.ok) {
-        throw new Error('Error al obtener el catálogo');
-    }
-
     const resultado = await response.json();
+
+    if (!response.ok || !resultado.success) {
+        throw new Error(
+            resultado.message || 'Error al obtener el catálogo'
+        );
+    }
 
     return resultado.data;
 };
 
-
 export const obtenerDetallePublicacion = async (id) => {
     const response = await fetch(
-        `http://localhost:3000/api/publicaciones/catalogo/${encodeURIComponent(id)}`
+        `${API_URL}/catalogo/${encodeURIComponent(id)}`
     );
 
     const resultado = await response.json();

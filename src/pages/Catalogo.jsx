@@ -10,6 +10,7 @@ import {
     MapPin,
     SlidersHorizontal
 } from 'lucide-react';
+import Footer from '../components/Footer/Footer';
 
 const Catalogo = () => {
     const [propiedades, setPropiedades] = useState([]);
@@ -212,19 +213,7 @@ const Catalogo = () => {
             </main>
 
             {/* Footer */}
-            <footer
-                id="contacto"
-                className="bg-[#111827] px-6 py-10 text-center"
-            >
-                <p className="text-lg font-extrabold text-white">
-                    Alquil<span className="text-[#E11D2E]">AR</span>
-                </p>
-
-                <p className="mt-3 text-sm text-gray-400">
-                    © {new Date().getFullYear()} AlquilAR.
-                    Todos los derechos reservados.
-                </p>
-            </footer>
+            <Footer/>
         </div>
     );
 };
